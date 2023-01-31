@@ -1,0 +1,139 @@
+        BLACK_PEON('\u265D', Color.BLACK, "peón"),
+        BLACK_ALFIL('\u265D', Color.BLACK, "alfil"),
+        BLACK_CABALLO('\u265E', Color.BLACK, "caballo"),
+        BLACK_TORRE('\u265C', Color.BLACK, "torre"),
+        BLACK_REINA('\u265B', Color.BLACK, "reina"),
+        BLACK_REY('\u265A', Color.BLACK, "rey"),
+        WHITE_PEON('\u265D', Color.WHITE, "peón"),
+        WHITE_ALFIL('\u265D', Color.WHITE, "alfil"),
+        WHITE_CABALLO('\u265E', Color.WHITE, "caballo"),
+        WHITE_TORRE('\u265C', Color.WHITE, "torre"),
+        WHITE_REINA('\u265B', Color.WHITE, "reina"),
+        WHITE_REY('\u265A', Color.WHITE, "rey");
+
+getMoves original peon
+/*  @Override
+    public ListaCoord getNextMoves() {
+        coordenadasMovimientos = new ListaCoord();
+        coordenadasKills = new ListaCoord();
+        Coordenada posicion = getCelda().getCoordenada();
+        Coordenada c;
+        Tablero t = getCelda().getTablero();
+
+        //Up
+        c = posicion.casillaUp();
+        verificarCasilla(c, t, false);
+        //DoubleUp
+        if (!coordenadasMovimientos.isEmpty() && getCelda().getCoordenada().getRow() == 7) {
+            c = posicion.casillaUp().casillaUp();
+            verificarCasilla(c, t, false);
+        }
+        //Matar
+        c = posicion.diagoUpLeft();
+        verificarCasilla(c, t, true);
+        c = posicion.diagoUpRight();
+        verificarCasilla(c, t, true);
+        return coordenadasMovimientos.addAll(coordenadasKills);
+    }*/
+
+enroque largo original
+ Tablero t = getCelda().getTablero();
+        Coordenada coordenada = getCelda().getCoordenada();
+        coordenada = coordenada.casillaLeft();
+        int i = 0;
+        while (i < 3) {
+            if (!t.getCelda(coordenada).isEmpty() || estaEnJaque(coordenada))
+                return false;
+            coordenada = coordenada.casillaLeft();
+            i++;
+        }
+
+
+estaEnJaque original
+/*NodoCoord aux = allMovements.getCabeza();
+         while (aux != null) {
+            if (aux.getCoordenada().equals(c))
+                return true;
+            aux = aux.getNext();
+        }*/
+
+resaltar todo el tablero
+ public void resaltarTodoTablero(Color color) {
+        resetColors();
+        ListaPieza vectorPiezas = piezasAliadas(color);
+        Coordenada c;
+        ListaCoord aux;
+        NodoPieza nodPiezAux = vectorPiezas.getCabeza();
+        while (nodPiezAux != null) {
+            aux = nodPiezAux.getPieza().getNextKills();
+            while ((c = aux.remove(0)) != null)
+                getCelda(c).resaltar();
+            nodPiezAux = nodPiezAux.getNext();
+        }
+    }
+moveTo original
+public void moveTo(Coordenada nuevaPosicion, Tablero t) {
+        if (!getComplexMoves().contiene(nuevaPosicion)) {
+            System.out.println(decirNombre() + " no puede moverse a " + (t.getCelda(nuevaPosicion).getCoordenada()));
+        } else {
+            if (t.getCelda(nuevaPosicion).isEmpty()) {
+                t.getCelda(celda.getCoordenada()).setPieza(null);
+                this.celda = t.getCelda(nuevaPosicion);
+                t.getCelda(nuevaPosicion).setPieza(this);
+            } else {
+                t.getCelda(celda.getCoordenada()).setPieza(null);
+
+                t.añadirMuerte(t.getCelda(nuevaPosicion).getPiece(), this.getColor());
+
+                this.celda = t.getCelda(nuevaPosicion);
+                t.getCelda(nuevaPosicion).getPiece().celda = null;
+                t.getCelda(nuevaPosicion).setPieza(this);
+
+            }
+            t.resetColors();
+        }
+    }
+
+movimientosAliadosVacios
+//    public boolean movesAliadosVacios() {
+//        Tablero t = getCelda().getTablero();
+//        ListaPieza aliadas = t.piezasAliadas(this.getColor());
+//        ListaCoord aux;
+//        NodoPieza nodoPiezaAux = aliadas.getCabeza();
+//
+//        while (nodoPiezaAux != null) {
+//            aux = nodoPiezaAux.getPieza().getComplexMoves();
+//            if (!aux.isEmpty()) {
+//                return false;
+//            }
+//            nodoPiezaAux = nodoPiezaAux.getNext();
+//        }
+//        return true;
+//    }
+
+añadirMuerteOriginal
+//    public void añadirMuerte(Pieza p, Color c) {
+//        if (c == Color.WHITE) {
+//            fichasNegrasMuertas.add(p);
+//        } else {
+//            fichasBlancasMuertas.add(p);
+//        }
+//    }
+
+//    public String mostrarPiezasGanadasPor() {
+//        NodoPieza nodPiezaAux = fichasNegrasMuertas.getCabeza();
+//        String salida = "Fichas ganadas por BLANCAS: ";
+//        while (nodPiezaAux != null) {
+//            salida += nodPiezaAux.getPieza().soloForma() + ",";
+//            nodPiezaAux = nodPiezaAux.getNext();
+//        }
+//        salida += "\n";
+//        nodPiezaAux = fichasBlancasMuertas.getCabeza();
+//        salida += "Fichas ganadas por NEGRAS: ";
+//        while (nodPiezaAux != null) {
+//            salida += nodPiezaAux.getPieza().soloForma() + ",";
+//            nodPiezaAux = nodPiezaAux.getNext();
+//        }
+//        salida += "\n";
+//        return salida;
+//    }

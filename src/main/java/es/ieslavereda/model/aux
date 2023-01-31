@@ -1,0 +1,323 @@
+/*Movimientos Alfil
+//UpLeft
+        c=posicion;
+        do {
+            c=c.diagoUpLeft();
+        }while (verificarCasilla(c));
+        //UpRight
+        c=posicion;
+        do {
+            c=c.diagoUpRight();
+        }while (verificarCasilla(c));
+        //DownLeft
+        c=posicion;
+        do {
+            c=c.diagoDownLeft();
+        }while (verificarCasilla(c));
+        //DownRight
+        c=posicion;
+        do {
+            c=c.diagoDownRight();
+        }while (verificarCasilla(c));*/
+
+
+//Movimientos de la reina
+  /*Coordenada[] auxAlfil;
+    Coordenada[] auxTorre;
+
+    if (getCelda().getColorOriginal()== Celda.ColorCelda.BLANCO){
+        auxAlfil = new AlfilBlanco(getCelda()).getNextMoves();
+    }else{
+        auxAlfil = new AlfilNegro(getCelda()).getNextMoves();
+    }
+    if (this.getColor()==Color.WHITE){
+        auxTorre = new TorreBlanca(getCelda()).getNextMoves();
+    }else{
+        auxTorre = new TorreNegra(getCelda()).getNextMoves();
+    }
+
+    coordenadasMoviminetos = new Coordenada[auxTorre.length+ auxAlfil.length];
+
+    int j = 0;
+    for (int i = 0; i <auxTorre.length; i++){
+       coordenadasMoviminetos[j++]=auxTorre[i];
+    }
+    for (int i = 0; i < auxAlfil.length; i++){
+        coordenadasMoviminetos[j++]=auxAlfil[i];
+    }
+    return coordenadasMoviminetos;*/
+
+
+
+//Metodos para saber si los reyes negros o blanco están en jaque
+/*public boolean reyNegroEnJaque(){
+        for (Celda[] row:vectorCeldas) {
+            for (Celda col:row) {
+                if (!col.isEmpty()){
+                    if (col.getPiece() instanceof ReyNegro){
+                        ReyNegro reyNegro = (ReyNegro)col.getPiece();
+                        return reyNegro.estaEnJaque();
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    public boolean reyBlancoEnJaque(){
+        for (Celda[] row:vectorCeldas) {
+            for (Celda col:row) {
+                if (!col.isEmpty()){
+                    if (col.getPiece() instanceof ReyBlanco){
+                        ReyBlanco reyBlanco = (ReyBlanco)col.getPiece();
+                        return reyBlanco.estaEnJaque();
+                    }
+                }
+            }
+        }
+        return false;
+    }*/
+
+//Verificar Casilas del rey (original)
+/*private void verificarCasilla(Coordenada c) {
+        Tablero t = getCelda().getTablero();
+
+        if (t.getCelda(c) != null) {
+            if (t.getCelda(c).isEmpty()) {
+                if (!estaEnJaque(c)) {
+                    coordenadasMovimientos = Tools.añadirCoordenada(coordenadasMovimientos, c);
+                }
+            } else {
+                if (t.getCelda(c).getPiece().getColor() != this.getColor()) {
+                    if (!estaEnJaque(c)) {
+                        coordenadasMovimientos = Tools.añadirCoordenada(coordenadasMovimientos, c);
+                    }
+                }
+            }
+        }
+    }*/
+
+//Devuelve si una coordenada está en un array de coordenadas
+//public static boolean existeMovimiento(Coordenada c, Pieza p){
+          Coordenada[] movimientosPieza = p.getNextMoves();
+          for (Coordenada coordenada : movimientosPieza) {
+              if (coordenada.equals(c)) return true;
+          }
+          return false;
+      }
+
+
+comprobar mate original
+/* public boolean mate(){
+        Tablero t = getCelda().getTablero();
+        Pieza[] aliadas = t.piezasAliadas(this.getColor());
+        Lista aux;
+        Coordenada origen;
+
+        for (Pieza p: aliadas) {
+            aux = p.getNextMoves();
+            origen = p.getCelda().getCoordenada();
+            if (!recursivaMate(aux, p, 0, t, origen)){
+                return false;
+            }
+        }
+       return true;
+    }
+
+    private boolean recursivaMate(Lista aux, Pieza p, int start, Tablero t, Coordenada origen) {
+
+        //if (start>=aux.length) return true;
+        if (aux.isEmpty()) return true;
+
+//        Pieza xd = t.getCelda(aux[start]).getPiece();
+//        p.moveTo(aux[start]);
+
+            Pieza xd = t.getCelda(aux.getCoordenada(start)).getPiece();
+            p.moveTo(aux.getCoordenada(start));
+
+        if (!t.reyEnJaque(this.getColor())){
+            p.deshacerMove(origen, aux.getCoordenada(start), xd);
+            return false;
+        }
+        else{
+            p.deshacerMove(origen, aux.getCoordenada(start), xd);
+            return (recursivaMate(aux, p, start+1, t, origen));
+        }
+    }*/
+
+verificar movimientos rey original
+/*private void verificarCasilla(Coordenada c) {
+        Tablero t = getCelda().getTablero();
+
+        if (t.getCelda(c) != null) {
+            if
+            (t.getCelda(c).isEmpty() && !estaEnJaque(c)
+            ||
+            (!t.getCelda(c).isEmpty() && t.getCelda(c).getPiece().getColor() != this.getColor() && !estaEnJaque(c)))
+            {
+                //coordenadasMovimientos = Tools.añadirCoordenada(coordenadasMovimientos, c);
+                coordenadasMovimientos.add(c);
+            }
+        }
+    }*/
+
+verificar matar peon
+ public void verificarMatar(Coordenada c, Tablero t) {
+        if (t.getCelda(c)!=null) {
+            if (!t.getCelda(c).isEmpty() && t.getCelda(c).getPiece().getColor() != this.getColor()) {
+                coordenadasKills.add(c);
+            }
+        }
+    }
+
+peon negro original
+public ListaCoord getNextMoves() {
+        coordenadasMovimientos = new ListaCoord();
+        Coordenada posicion = getCelda().getCoordenada();
+        Coordenada c;
+        boolean casillaArribaLibre;
+
+        //Down
+        c = posicion.casillaDown();
+        casillaArribaLibre = verificarCasilla(c);
+        //DoubleDown
+        if (casillaArribaLibre && getCelda().getCoordenada().getRow() == 2) {
+            c = posicion.casillaDown().casillaDown();
+            verificarCasilla(c);
+        }
+        return coordenadasMovimientos.addAll(getNextKills());
+    }
+
+    public boolean verificarCasilla(Coordenada c) {
+        Tablero t = getCelda().getTablero();
+        if (t.getCelda(c).isEmpty()) {
+            coordenadasMovimientos.add(c);
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    public ListaCoord getNextKills() {
+        coordenadasKills = new ListaCoord();
+        Coordenada posicion = getCelda().getCoordenada();
+        Coordenada c;
+        c = posicion.diagoDownLeft();
+        verificarMatar(c);
+        c = posicion.diagoDownRight();
+        verificarMatar(c);
+        return coordenadasKills;
+    }
+
+    public void verificarMatar(Coordenada c) {
+        Tablero t = getCelda().getTablero();
+        if (t.getCelda(c)!=null) {
+            if (!t.getCelda(c).isEmpty() && t.getCelda(c).getPiece().getColor() != this.getColor()) {
+                coordenadasKills.add(c);
+            }
+        }
+    }
+
+
+    @Override
+    public ListaCoord getComplexMoves(){
+        coordenadasMovimientos = new ListaCoord();
+        Coordenada posicion = getCelda().getCoordenada();
+        Coordenada c;
+        boolean casillaArribaLibre;
+
+        //Down
+        c = posicion.casillaDown();
+        casillaArribaLibre = verificarComplexCasilla(c);
+        //DoubleDown
+        if (casillaArribaLibre && getCelda().getCoordenada().getRow() == 2) {
+            c = posicion.casillaDown().casillaDown();
+            verificarComplexCasilla(c);
+        }
+        return coordenadasMovimientos.addAll(getNextKills());
+    }
+
+    public boolean verificarComplexCasilla(Coordenada c){
+        Tablero t = getCelda().getTablero();
+        Pieza provisional;
+        Celda celda = this.celda;
+        boolean aux = false;
+        if (t.getCelda(c)!=null) {
+            if (t.getCelda(c).isEmpty()) {
+                provisional = t.getCelda(c).getPiece();
+                moveVerificar(c);
+                if (!t.estaJaqueColor(this.getColor())) {
+                    coordenadasMovimientos.add(c);
+                    aux = true;
+                }
+                deshacerMove(celda.getCoordenada(), c, provisional);
+            }
+        }
+        return aux;
+    }
+
+
+    @Override
+    public ListaCoord getComplexKills(){
+        coordenadasKills = new ListaCoord();
+        Coordenada posicion = getCelda().getCoordenada();
+        Coordenada c;
+        c = posicion.diagoDownLeft();
+        verificarComplexMatar(c);
+        c = posicion.diagoDownRight();
+        verificarComplexMatar(c);
+        return coordenadasKills;
+    }
+
+    public void verificarComplexMatar(Coordenada c) {
+        Tablero t = getCelda().getTablero();
+        Celda celda = this.celda;
+        Pieza provisional;
+        if (t.getCelda(c)!=null) {
+            if (!t.getCelda(c).isEmpty() && t.getCelda(c).getPiece().getColor() != this.getColor()) {
+                provisional = t.getCelda(c).getPiece();
+                moveVerificar(c);
+                if (!t.estaJaqueColor(this.getColor())) {
+                    coordenadasKills.add(c);
+                }
+                deshacerMove(celda.getCoordenada(), c, provisional);
+            }
+        }
+    }
+    piezas enemoigas original
+     public Pieza[] piezasEnemigas(Color colorAux) { //Devolver en un array las fichas del color contrario al del parametro
+
+            Pieza[] vectorPiezas = new Pieza[0];
+
+            for (Celda[] row : vectorCeldas) {
+                for (Celda col : row) {
+                    if (col.getPiece() != null && col.getPiece().getColor() != colorAux) {
+                        vectorPiezas = Tools.añadirPieza(vectorPiezas, col.getPiece());
+                    }
+                }
+            }
+            return vectorPiezas;
+        }
+
+fichas ganadas por original
+ for (Pieza p : fichasNegrasMuertas) {
+            salida += p.soloForma() + ", ";
+        }
+        salida += "\n";
+        salida += "Fichas ganadas por NEGRAS: ";
+        for (Pieza p : fichasBlancasMuertas) {
+            salida += p.soloForma() + ", ";
+        }
+        salida += "\n";
+        return salida;
+    }
+
+añadir pieza original
+public static Pieza[] añadirPieza(Pieza[] vectorPiezas, Pieza p) {
+        Pieza[] aux = new Pieza[vectorPiezas.length + 1];
+        for (int i = 0; i < vectorPiezas.length; i++) {
+            aux[i] = vectorPiezas[i];
+        }
+        aux[aux.length - 1] = p;
+        return aux;
+    }
