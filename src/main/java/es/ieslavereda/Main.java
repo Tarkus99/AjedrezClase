@@ -3,6 +3,8 @@ package es.ieslavereda;
 import es.ieslavereda.model.GAME.Partida;
 import es.ieslavereda.model.Screen.Screen;
 
+//prueba
+
 public class Main {
     public static void main(String[] args) {
         Screen.showBienvenida();
