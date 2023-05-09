@@ -1,5 +1,6 @@
 package es.ieslavereda.model;
 
+import es.ieslavereda.model.GAME.Coordenada;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,5 +1,6 @@
 package es.ieslavereda.model;
 
+import es.ieslavereda.model.GAME.Color;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
